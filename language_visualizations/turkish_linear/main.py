@@ -9,20 +9,15 @@ from abstractions.topologies import LinearTopology
 
 def main():
     """
-    Builds and visualizes the Turkish Linear Topology.
+    Builds and visualizes the Turkish Linear Topology interactively.
     """
     topo = LinearTopology()
     topo.build_graph()
 
-    fig, ax = plt.subplots(1, 1, figsize=(10, 6))
-    
-    topo.visualize(ax)
-
-    plt.tight_layout()
-    
-    output_filename = "turkish_linear_topology.png"
-    plt.savefig(output_filename)
-    print(f"Visualization saved to {output_filename}")
+    # Interactive visualization
+    output_filename_html = "turkish_linear_topology.html"
+    topo.visualize_interactive(output_filename_html)
+    print(f"Interactive visualization saved to {output_filename_html}")
 
 if __name__ == "__main__":
     main()

@@ -9,20 +9,15 @@ from abstractions.topologies import LatticeTopology
 
 def main():
     """
-    Builds and visualizes the Chinese Lattice Topology.
+    Builds and visualizes the Chinese Lattice Topology interactively.
     """
     topo = LatticeTopology()
     topo.build_graph()
 
-    fig, ax = plt.subplots(1, 1, figsize=(8, 8))
-    
-    topo.visualize(ax)
-
-    plt.tight_layout()
-    
-    output_filename = "chinese_lattice_topology.png"
-    plt.savefig(output_filename)
-    print(f"Visualization saved to {output_filename}")
+    # Interactive visualization
+    output_filename_html = "chinese_lattice_topology.html"
+    topo.visualize_interactive(output_filename_html)
+    print(f"Interactive visualization saved to {output_filename_html}")
 
 if __name__ == "__main__":
     main()

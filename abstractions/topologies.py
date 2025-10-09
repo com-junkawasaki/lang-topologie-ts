@@ -1,6 +1,9 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
+from pyvis.network import Network
+import webbrowser
+import os
 
 class LanguageTopology:
     """
@@ -26,6 +29,51 @@ class LanguageTopology:
         pos = nx.spring_layout(self.graph, seed=42)
         nx.draw(self.graph, ax=ax, pos=pos, with_labels=True, node_color='lightblue', edge_color='gray', node_size=800, font_size=10)
         ax.set_title(self.title, fontsize=15)
+
+    def visualize_interactive(self, filename="interactive_topology.html"):
+        """
+        Generates an interactive HTML visualization of the graph using pyvis.
+        """
+        is_directed = isinstance(self.graph, nx.DiGraph)
+        net = Network(height="750px", width="100%", bgcolor="#222222", font_color="white", notebook=True, directed=is_directed)
+        net.from_nx(self.graph)
+
+        # Customize node appearance based on 'type' attribute
+        for node in net.nodes:
+            node_type = self.graph.nodes[node['id']].get('type', 'default')
+            if node_type == 'vowel' or node_type == 'final' or node_type == 'vowel_pattern':
+                node['color'] = 'skyblue'
+                node['size'] = 25
+            elif node_type == 'consonant' or node_type == 'initial' or node_type == 'root' or node_type == 'stem':
+                node['color'] = 'lightcoral'
+                node['size'] = 30
+            else: # syllable, derivation, word
+                node['color'] = 'lightgreen'
+                node['size'] = 20
+        
+        # For directed graphs, customize arrows
+        if is_directed:
+            net.set_options("""
+            var options = {
+              "edges": {
+                "arrows": {
+                  "to": {
+                    "enabled": true,
+                    "scaleFactor": 0.5
+                  }
+                }
+              }
+            }
+            """)
+        
+        # Show the interactive plot in a new browser tab
+        try:
+            path = os.path.abspath(filename)
+            net.save_graph(filename)
+            webbrowser.open(f"file://{path}")
+        except Exception as e:
+            print(f"Could not open browser: {e}")
+
 
 class RingTopology(LanguageTopology):
     """
