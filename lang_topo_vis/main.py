@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from topologies import RingTopology, TreeTopology, LatticeTopology
+from topologies import RingTopology, TreeTopology, LatticeTopology, LayeredTopology, LinearTopology
 
 def main():
     """
@@ -9,7 +9,9 @@ def main():
     topologies = [
         RingTopology(),
         TreeTopology(),
-        LatticeTopology()
+        LatticeTopology(),
+        LayeredTopology(),
+        LinearTopology()
     ]
 
     # Build the graph for each topology
@@ -17,18 +19,23 @@ def main():
         topo.build_graph()
 
     # Create a figure to display the visualizations
-    fig, axes = plt.subplots(1, len(topologies), figsize=(20, 7))
-    if len(topologies) == 1:
-        axes = [axes] # Make it iterable if there is only one plot
+    # Arrange plots in a 2x3 grid for better layout
+    fig, axes = plt.subplots(2, 3, figsize=(22, 14))
+    axes = axes.flatten() # Flatten the 2D array of axes for easy iteration
 
     # Visualize each topology
-    for ax, topo in zip(axes, topologies):
-        topo.visualize(ax)
+    for i, topo in enumerate(topologies):
+        topo.visualize(axes[i])
+
+    # Hide any unused subplots
+    for i in range(len(topologies), len(axes)):
+        fig.delaxes(axes[i])
+
 
     plt.tight_layout()
     
     # Save the figure to a file
-    output_filename = "language_topologies.png"
+    output_filename = "language_topologies_extended.png"
     plt.savefig(output_filename)
     print(f"Visualization saved to {output_filename}")
 

@@ -195,3 +195,94 @@ class LatticeTopology(LanguageTopology):
         nx.draw_networkx_labels(self.graph, self.pos, labels, font_size=9, ax=ax)
         ax.set_title(self.title, fontsize=15)
         ax.set_aspect('equal', adjustable='box')
+
+class LayeredTopology(LanguageTopology):
+    """
+    Represents a Semitic-like layered topology.
+    - Vowels (Phase Space): A set of vowel patterns.
+    - Consonants (Operators): A tri-consonantal root that acts as a higher-order
+      operator, taking a vowel pattern to produce a word.
+    """
+    def __init__(self):
+        super().__init__()
+        self.graph = nx.DiGraph()
+        self.title = "Layered Topology (Semitic-like)"
+        self.root = 'K-T-B'
+        self.vowel_patterns = ['a-a-a', 'u-i-a', 'i-aa']
+        self.words = {
+            'a-a-a': 'kataba',
+            'u-i-a': 'kutiba',
+            'i-aa': 'kitaab'
+        }
+
+    def build_graph(self):
+        # Add root and vowel pattern nodes
+        self.graph.add_node(self.root, type='root')
+        for pattern in self.vowel_patterns:
+            self.graph.add_node(pattern, type='vowel_pattern')
+
+        # Add word nodes and connect them
+        for pattern, word in self.words.items():
+            self.graph.add_node(word, type='word')
+            # Edges show the generation process from root and pattern
+            self.graph.add_edge(self.root, word)
+            self.graph.add_edge(pattern, word)
+    
+    def visualize(self, ax):
+        pos = {}
+        # Manually create a layered layout
+        pos[self.root] = (0, 1)
+        
+        pattern_x_coords = np.linspace(-1, 1, len(self.vowel_patterns))
+        for i, pattern in enumerate(self.vowel_patterns):
+            pos[pattern] = (pattern_x_coords[i], -1)
+
+        word_x_coords = np.linspace(-1, 1, len(self.words))
+        for i, (pattern, word) in enumerate(self.words.items()):
+            pos[word] = (word_x_coords[i], 0)
+
+        node_colors = []
+        for node, data in self.graph.nodes(data=True):
+            if data['type'] == 'root':
+                node_colors.append('lightcoral')
+            elif data['type'] == 'vowel_pattern':
+                node_colors.append('skyblue')
+            else: # word
+                node_colors.append('lightgreen')
+
+        nx.draw(self.graph, ax=ax, pos=pos, with_labels=True, node_color=node_colors, arrows=True, node_size=1500, font_size=10)
+        ax.set_title(self.title, fontsize=15)
+
+
+class LinearTopology(LanguageTopology):
+    """
+    Represents a Turkish-like linear (DAG) topology.
+    - Vowels (Phase Space): The state of the word, subject to vowel harmony.
+    - Consonants/Suffixes (Operators): Sequential operators that transition
+      the state (word) to a new one.
+    """
+    def __init__(self):
+        super().__init__()
+        self.graph = nx.DiGraph()
+        self.title = "Linear (DAG) Topology (Turkish-like)"
+        self.derivations = ["göz", "gözlük", "gözlükçü", "gözlükçüler"]
+
+    def build_graph(self):
+        # Add nodes for each step in the derivation
+        for i, word in enumerate(self.derivations):
+            self.graph.add_node(word, type='stem' if i == 0 else 'derivation')
+        
+        # Add edges to show the linear sequence
+        for i in range(len(self.derivations) - 1):
+            self.graph.add_edge(self.derivations[i], self.derivations[i+1])
+
+    def visualize(self, ax):
+        try:
+            pos = nx.nx_agraph.graphviz_layout(self.graph, prog='dot', args='-Grankdir=LR')
+        except ImportError:
+            print("Graphviz not found, using a spring layout as a fallback for the linear topology.")
+            pos = nx.spring_layout(self.graph, seed=42)
+
+        node_colors = ['lightcoral' if d['type'] == 'stem' else 'lightgreen' for n, d in self.graph.nodes(data=True)]
+        nx.draw(self.graph, ax=ax, pos=pos, with_labels=True, node_color=node_colors, arrows=True, node_size=1800, font_size=10)
+        ax.set_title(self.title, fontsize=15)
