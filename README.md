@@ -423,3 +423,9 @@ Jun、次は
 
 👉 Jun、ここから先は **混成型の数理的モデル化（例：multiplex network adjacency行列）** に進めますか？
 それとも **混成型の言霊的意味づけ（星×樹＝照らして伸びる、環×樹＝巡り育つ…）** を深めますか？
+
+---
+
+## License
+
+This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
