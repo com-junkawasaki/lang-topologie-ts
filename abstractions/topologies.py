@@ -4,6 +4,8 @@ import numpy as np
 from pyvis.network import Network
 import webbrowser
 import os
+from mpl_toolkits.mplot3d import Axes3D
+from mpl_toolkits.mplot3d.art3d import Line3D
 
 class LanguageTopology:
     """
@@ -300,6 +302,70 @@ class LayeredTopology(LanguageTopology):
 
         nx.draw(self.graph, ax=ax, pos=pos, with_labels=True, node_color=node_colors, arrows=True, node_size=1500, font_size=10)
         ax.set_title(self.title, fontsize=15)
+
+    def visualize_3d_pyramid(self, fig):
+        """
+        Visualizes the layered topology as a 3D pyramid.
+        """
+        ax = fig.add_subplot(111, projection='3d')
+        ax.set_title(self.title, fontsize=15)
+
+        # 1. Define 3D coordinates for nodes
+        pos = {
+            # Apex of the pyramid
+            self.root: (0, 0, 1),
+            # Base of the pyramid (a triangle)
+            self.vowel_patterns[0]: (0, 1, 0),
+            self.vowel_patterns[1]: (-0.866, -0.5, 0),
+            self.vowel_patterns[2]: (0.866, -0.5, 0),
+        }
+        # Place words on the edges between the root and vowel patterns
+        for pattern, word in self.words.items():
+            root_pos = np.array(pos[self.root])
+            pattern_pos = np.array(pos[pattern])
+            # Position the word halfway along the edge
+            pos[word] = tuple(root_pos + 0.5 * (pattern_pos - root_pos))
+
+        # 2. Plot nodes
+        for node, (x, y, z) in pos.items():
+            node_type = self.graph.nodes[node]['type']
+            if node_type == 'root':
+                color = 'lightcoral'
+            elif node_type == 'vowel_pattern':
+                color = 'skyblue'
+            else: # word
+                color = 'lightgreen'
+            ax.scatter(x, y, z, c=color, s=1500, edgecolors='black')
+            ax.text(x, y, z, f'  {node}', size=10, zorder=1, color='k')
+            
+        # 3. Plot edges
+        for edge in self.graph.edges():
+            start_pos = pos[edge[0]]
+            end_pos = pos[edge[1]]
+            line = Line3D(*zip(start_pos, end_pos), color="black", linestyle='--')
+            ax.add_line(line)
+            
+        # 4. Draw the base of the pyramid
+        base_points = [pos[p] for p in self.vowel_patterns]
+        base_points.append(base_points[0]) # close the loop
+        xs, ys, zs = zip(*base_points)
+        ax.plot(xs, ys, zs, color="gray")
+
+        ax.set_xlabel('X')
+        ax.set_ylabel('Y')
+        ax.set_zlabel('Z')
+        
+        # Make the panes transparent
+        ax.xaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
+        ax.yaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
+        ax.zaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
+        # Make the grid lines transparent
+        ax.xaxis._axinfo["grid"]['color'] =  (1,1,1,0)
+        ax.yaxis._axinfo["grid"]['color'] =  (1,1,1,0)
+        ax.zaxis._axinfo["grid"]['color'] =  (1,1,1,0)
+        # Remove axes
+        ax.set_axis_off()
+
 
 
 class LinearTopology(LanguageTopology):
