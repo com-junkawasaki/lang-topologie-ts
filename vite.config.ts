@@ -1,14 +1,9 @@
 import { defineConfig } from "vite";
-import typegpu from "unplugin-typegpu/vite";
 
 export default defineConfig({
-  plugins: [
-    typegpu({
-      // TypeGPU plugin configuration
-    }),
-  ],
+  plugins: [],
   server: {
-    port: 3000,
+    port: 25324,
     open: true,
   },
   build: {

@@ -1,0 +1,268 @@
+{
+  "name": "ring",
+  "title": "Ring Topology (Japanese)",
+  "description": "Vowels form a cyclic hub, consonants branch tree-like.",
+  "nodes": [
+    {
+      "id": "a",
+      "label": "a",
+      "type": "vowel"
+    },
+    {
+      "id": "i",
+      "label": "i",
+      "type": "vowel"
+    },
+    {
+      "id": "u",
+      "label": "u",
+      "type": "vowel"
+    },
+    {
+      "id": "e",
+      "label": "e",
+      "type": "vowel"
+    },
+    {
+      "id": "o",
+      "label": "o",
+      "type": "vowel"
+    },
+    {
+      "id": "k",
+      "label": "k",
+      "type": "consonant"
+    },
+    {
+      "id": "ka",
+      "label": "ka",
+      "type": "syllable"
+    },
+    {
+      "id": "ki",
+      "label": "ki",
+      "type": "syllable"
+    },
+    {
+      "id": "ku",
+      "label": "ku",
+      "type": "syllable"
+    },
+    {
+      "id": "ke",
+      "label": "ke",
+      "type": "syllable"
+    },
+    {
+      "id": "ko",
+      "label": "ko",
+      "type": "syllable"
+    },
+    {
+      "id": "s",
+      "label": "s",
+      "type": "consonant"
+    },
+    {
+      "id": "sa",
+      "label": "sa",
+      "type": "syllable"
+    },
+    {
+      "id": "si",
+      "label": "si",
+      "type": "syllable"
+    },
+    {
+      "id": "su",
+      "label": "su",
+      "type": "syllable"
+    },
+    {
+      "id": "se",
+      "label": "se",
+      "type": "syllable"
+    },
+    {
+      "id": "so",
+      "label": "so",
+      "type": "syllable"
+    },
+    {
+      "id": "t",
+      "label": "t",
+      "type": "consonant"
+    },
+    {
+      "id": "ta",
+      "label": "ta",
+      "type": "syllable"
+    },
+    {
+      "id": "ti",
+      "label": "ti",
+      "type": "syllable"
+    },
+    {
+      "id": "tu",
+      "label": "tu",
+      "type": "syllable"
+    },
+    {
+      "id": "te",
+      "label": "te",
+      "type": "syllable"
+    },
+    {
+      "id": "to",
+      "label": "to",
+      "type": "syllable"
+    }
+  ],
+  "edges": [
+    {
+      "source": "a",
+      "target": "i"
+    },
+    {
+      "source": "a",
+      "target": "o"
+    },
+    {
+      "source": "a",
+      "target": "ka"
+    },
+    {
+      "source": "a",
+      "target": "sa"
+    },
+    {
+      "source": "a",
+      "target": "ta"
+    },
+    {
+      "source": "i",
+      "target": "u"
+    },
+    {
+      "source": "i",
+      "target": "ki"
+    },
+    {
+      "source": "i",
+      "target": "si"
+    },
+    {
+      "source": "i",
+      "target": "ti"
+    },
+    {
+      "source": "u",
+      "target": "e"
+    },
+    {
+      "source": "u",
+      "target": "ku"
+    },
+    {
+      "source": "u",
+      "target": "su"
+    },
+    {
+      "source": "u",
+      "target": "tu"
+    },
+    {
+      "source": "e",
+      "target": "o"
+    },
+    {
+      "source": "e",
+      "target": "ke"
+    },
+    {
+      "source": "e",
+      "target": "se"
+    },
+    {
+      "source": "e",
+      "target": "te"
+    },
+    {
+      "source": "o",
+      "target": "ko"
+    },
+    {
+      "source": "o",
+      "target": "so"
+    },
+    {
+      "source": "o",
+      "target": "to"
+    },
+    {
+      "source": "k",
+      "target": "ka"
+    },
+    {
+      "source": "k",
+      "target": "ki"
+    },
+    {
+      "source": "k",
+      "target": "ku"
+    },
+    {
+      "source": "k",
+      "target": "ke"
+    },
+    {
+      "source": "k",
+      "target": "ko"
+    },
+    {
+      "source": "s",
+      "target": "sa"
+    },
+    {
+      "source": "s",
+      "target": "si"
+    },
+    {
+      "source": "s",
+      "target": "su"
+    },
+    {
+      "source": "s",
+      "target": "se"
+    },
+    {
+      "source": "s",
+      "target": "so"
+    },
+    {
+      "source": "t",
+      "target": "ta"
+    },
+    {
+      "source": "t",
+      "target": "ti"
+    },
+    {
+      "source": "t",
+      "target": "tu"
+    },
+    {
+      "source": "t",
+      "target": "te"
+    },
+    {
+      "source": "t",
+      "target": "to"
+    }
+  ],
+  "metadata": {
+    "topologyType": "ring",
+    "layout": "circular"
+  }
+}

@@ -34,18 +34,22 @@ export class TopologyVisualizer {
   }
 
   async initialize(): Promise<void> {
+    console.log("Initializing WebGPU...");
+    
     // Initialize WebGPU context
     if (!navigator.gpu) {
-      throw new Error("WebGPU is not supported in this browser");
+      throw new Error("WebGPU is not supported in this browser. Please use Chrome/Edge 113+ or enable WebGPU flag.");
     }
 
     const adapter = await navigator.gpu.requestAdapter();
     if (!adapter) {
       throw new Error("Failed to get GPU adapter");
     }
+    console.log("GPU adapter obtained");
 
     const device = await adapter.requestDevice();
-    this.device = device as unknown as GPUDevice;
+    this.device = device;
+    console.log("GPU device created");
 
     // Setup canvas context
     this.context = this.canvas.getContext("webgpu");
@@ -62,7 +66,19 @@ export class TopologyVisualizer {
 
     // Setup canvas resize handler
     this.resizeCanvas();
-    window.addEventListener("resize", () => this.resizeCanvas());
+    window.addEventListener("resize", () => {
+      this.resizeCanvas();
+      // Reconfigure context after resize
+      if (this.context && this.device) {
+        const format = navigator.gpu.getPreferredCanvasFormat();
+        this.context.configure({
+          device: this.device,
+          format,
+          alphaMode: "premultiplied",
+        });
+      }
+    });
+    console.log("Canvas initialized");
 
     // Setup mouse controls
     this.setupControls();
@@ -178,8 +194,13 @@ fn fs_main(input: VertexOutput) -> @location(0) vec4<f32> {
   private resizeCanvas(): void {
     const dpr = window.devicePixelRatio || 1;
     const rect = this.canvas.getBoundingClientRect();
-    this.canvas.width = rect.width * dpr;
-    this.canvas.height = rect.height * dpr;
+    const width = Math.max(rect.width, 800);
+    const height = Math.max(rect.height, 600);
+    this.canvas.width = width * dpr;
+    this.canvas.height = height * dpr;
+    this.canvas.style.width = `${width}px`;
+    this.canvas.style.height = `${height}px`;
+    console.log(`Canvas resized to ${this.canvas.width}x${this.canvas.height}`);
   }
 
   private setupControls(): void {
@@ -216,16 +237,24 @@ fn fs_main(input: VertexOutput) -> @location(0) vec4<f32> {
   }
 
   async loadTopology(name: string): Promise<void> {
+    console.log(`Loading topology: ${name}`);
     this.currentTopology = await loadTopologyData(name);
+    console.log(`Topology loaded: ${this.currentTopology.nodes.length} nodes, ${this.currentTopology.edges.length} edges`);
     this.updateInfo();
     await this.updateBuffers();
+    console.log("Buffers updated");
   }
 
   private async updateBuffers(): Promise<void> {
-    if (!this.device || !this.currentTopology) return;
+    if (!this.device || !this.currentTopology) {
+      console.warn("Cannot update buffers: device or topology missing");
+      return;
+    }
 
+    console.log("Computing layout...");
     // Compute layout for nodes
     const nodes = this.computeLayout(this.currentTopology.nodes);
+    console.log(`Layout computed for ${nodes.length} nodes`);
 
     // Create node vertex data (instanced rendering as circles)
     const nodeVertices: number[] = [];
@@ -238,8 +267,8 @@ fn fs_main(input: VertexOutput) -> @location(0) vec4<f32> {
       const x = node.x ?? 0;
       const y = node.y ?? 0;
 
-      // Create a circle with 12 vertices
-      const segments = 12;
+      // Create a circle with 16 vertices for smoother appearance
+      const segments = 16;
       const centerIndex = indexOffset;
       nodeVertices.push(x, y, ...color, size); // Center vertex
 
@@ -307,14 +336,19 @@ fn fs_main(input: VertexOutput) -> @location(0) vec4<f32> {
     const nodesWithPositions = nodes.map((node, i) => {
       if (node.x === undefined || node.y === undefined) {
         const angle = (i / nodes.length) * Math.PI * 2;
-        const radius = 2.0;
+        const radius = 3.0; // Larger radius for better visibility
         return {
           ...node,
           x: Math.cos(angle) * radius,
           y: Math.sin(angle) * radius,
         };
       }
-      return node;
+      // Scale existing positions if they seem too small
+      return {
+        ...node,
+        x: (node.x ?? 0) * 0.5,
+        y: (node.y ?? 0) * 0.5,
+      };
     });
     return nodesWithPositions;
   }
@@ -337,9 +371,9 @@ fn fs_main(input: VertexOutput) -> @location(0) vec4<f32> {
     switch (type) {
       case "vowel":
       case "consonant":
-        return 0.15;
+        return 0.5; // Larger size for visibility
       default:
-        return 0.1;
+        return 0.3;
     }
   }
 
@@ -378,6 +412,7 @@ fn fs_main(input: VertexOutput) -> @location(0) vec4<f32> {
       !this.edgePipeline ||
       !this.uniformBuffer
     ) {
+      // Silently return if not ready (will be ready soon)
       return;
     }
 
@@ -438,8 +473,11 @@ fn fs_main(input: VertexOutput) -> @location(0) vec4<f32> {
   private createViewMatrix(aspect: number): [[number, number, number], [number, number, number], [number, number, number]] {
     // Orthographic projection matrix: scale to NDC and apply zoom
     // NDC ranges from -1 to 1, so we scale by 2/width and 2/height
-    const scaleX = (2.0 / this.canvas.width) * this.camera.zoom;
-    const scaleY = (2.0 / this.canvas.height) * this.camera.zoom;
+    // Use world coordinates, not pixel coordinates
+    const worldWidth = 10.0; // World space width
+    const worldHeight = 10.0 / aspect; // World space height
+    const scaleX = (2.0 / worldWidth) * this.camera.zoom;
+    const scaleY = (2.0 / worldHeight) * this.camera.zoom;
     return [
       [scaleX, 0, 0],
       [0, scaleY, 0],

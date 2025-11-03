@@ -1,0 +1,108 @@
+{
+  "name": "lattice",
+  "title": "Lattice Topology (Chinese)",
+  "description": "Consonants and vowels form a grid, tones add cyclic loops.",
+  "nodes": [
+    {
+      "id": "b",
+      "label": "b",
+      "type": "initial"
+    },
+    {
+      "id": "p",
+      "label": "p",
+      "type": "initial"
+    },
+    {
+      "id": "m",
+      "label": "m",
+      "type": "initial"
+    },
+    {
+      "id": "a",
+      "label": "a",
+      "type": "final"
+    },
+    {
+      "id": "o",
+      "label": "o",
+      "type": "final"
+    },
+    {
+      "id": "i",
+      "label": "i",
+      "type": "final"
+    },
+    {
+      "id": "ba",
+      "label": "ba",
+      "type": "syllable"
+    },
+    {
+      "id": "bo",
+      "label": "bo",
+      "type": "syllable"
+    },
+    {
+      "id": "po",
+      "label": "po",
+      "type": "syllable"
+    },
+    {
+      "id": "ma",
+      "label": "ma",
+      "type": "syllable"
+    },
+    {
+      "id": "mo",
+      "label": "mo",
+      "type": "syllable"
+    }
+  ],
+  "edges": [
+    {
+      "source": "b",
+      "target": "ba"
+    },
+    {
+      "source": "b",
+      "target": "bo"
+    },
+    {
+      "source": "p",
+      "target": "po"
+    },
+    {
+      "source": "m",
+      "target": "ma"
+    },
+    {
+      "source": "m",
+      "target": "mo"
+    },
+    {
+      "source": "a",
+      "target": "ba"
+    },
+    {
+      "source": "a",
+      "target": "ma"
+    },
+    {
+      "source": "o",
+      "target": "bo"
+    },
+    {
+      "source": "o",
+      "target": "po"
+    },
+    {
+      "source": "o",
+      "target": "mo"
+    }
+  ],
+  "metadata": {
+    "topologyType": "lattice",
+    "layout": "grid"
+  }
+}

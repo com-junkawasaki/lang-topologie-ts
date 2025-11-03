@@ -1,0 +1,93 @@
+{
+  "name": "tree",
+  "title": "Tree Topology (English)",
+  "description": "Consonant clusters form roots, vowels branch hierarchically.",
+  "nodes": [
+    {
+      "id": "str",
+      "label": "str",
+      "type": "root"
+    },
+    {
+      "id": "strong",
+      "label": "strong",
+      "type": "derivation"
+    },
+    {
+      "id": "strength",
+      "label": "strength",
+      "type": "derivation"
+    },
+    {
+      "id": "structure",
+      "label": "structure",
+      "type": "derivation"
+    },
+    {
+      "id": "string",
+      "label": "string",
+      "type": "derivation"
+    },
+    {
+      "id": "cl",
+      "label": "cl",
+      "type": "root"
+    },
+    {
+      "id": "clean",
+      "label": "clean",
+      "type": "derivation"
+    },
+    {
+      "id": "cluster",
+      "label": "cluster",
+      "type": "derivation"
+    },
+    {
+      "id": "climb",
+      "label": "climb",
+      "type": "derivation"
+    }
+  ],
+  "edges": [
+    {
+      "source": "str",
+      "target": "strong",
+      "directed": true
+    },
+    {
+      "source": "str",
+      "target": "strength",
+      "directed": true
+    },
+    {
+      "source": "str",
+      "target": "structure",
+      "directed": true
+    },
+    {
+      "source": "str",
+      "target": "string",
+      "directed": true
+    },
+    {
+      "source": "cl",
+      "target": "clean",
+      "directed": true
+    },
+    {
+      "source": "cl",
+      "target": "cluster",
+      "directed": true
+    },
+    {
+      "source": "cl",
+      "target": "climb",
+      "directed": true
+    }
+  ],
+  "metadata": {
+    "topologyType": "tree",
+    "layout": "hierarchical"
+  }
+}

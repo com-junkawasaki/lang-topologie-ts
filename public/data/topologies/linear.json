@@ -1,0 +1,48 @@
+{
+  "name": "linear",
+  "title": "Linear Topology (Turkish)",
+  "description": "Stem to suffix DAG with vowel harmony branching.",
+  "nodes": [
+    {
+      "id": "göz",
+      "label": "göz",
+      "type": "stem"
+    },
+    {
+      "id": "gözlük",
+      "label": "gözlük",
+      "type": "derivation"
+    },
+    {
+      "id": "gözlükçü",
+      "label": "gözlükçü",
+      "type": "derivation"
+    },
+    {
+      "id": "gözlükçüler",
+      "label": "gözlükçüler",
+      "type": "derivation"
+    }
+  ],
+  "edges": [
+    {
+      "source": "göz",
+      "target": "gözlük",
+      "directed": true
+    },
+    {
+      "source": "gözlük",
+      "target": "gözlükçü",
+      "directed": true
+    },
+    {
+      "source": "gözlükçü",
+      "target": "gözlükçüler",
+      "directed": true
+    }
+  ],
+  "metadata": {
+    "topologyType": "linear",
+    "layout": "sequential"
+  }
+}
