@@ -1,0 +1,78 @@
+{
+  "name": "layered",
+  "title": "Layered Topology (Semitic)",
+  "description": "Consonant roots form layers, vowel patterns project as grids.",
+  "nodes": [
+    {
+      "id": "K-T-B",
+      "label": "K-T-B",
+      "type": "root"
+    },
+    {
+      "id": "a-a-a",
+      "label": "a-a-a",
+      "type": "vowel_pattern"
+    },
+    {
+      "id": "u-i-a",
+      "label": "u-i-a",
+      "type": "vowel_pattern"
+    },
+    {
+      "id": "i-aa",
+      "label": "i-aa",
+      "type": "vowel_pattern"
+    },
+    {
+      "id": "kataba",
+      "label": "kataba",
+      "type": "word"
+    },
+    {
+      "id": "kutiba",
+      "label": "kutiba",
+      "type": "word"
+    },
+    {
+      "id": "kitaab",
+      "label": "kitaab",
+      "type": "word"
+    }
+  ],
+  "edges": [
+    {
+      "source": "K-T-B",
+      "target": "kataba",
+      "directed": true
+    },
+    {
+      "source": "K-T-B",
+      "target": "kutiba",
+      "directed": true
+    },
+    {
+      "source": "K-T-B",
+      "target": "kitaab",
+      "directed": true
+    },
+    {
+      "source": "a-a-a",
+      "target": "kataba",
+      "directed": true
+    },
+    {
+      "source": "u-i-a",
+      "target": "kutiba",
+      "directed": true
+    },
+    {
+      "source": "i-aa",
+      "target": "kitaab",
+      "directed": true
+    }
+  ],
+  "metadata": {
+    "topologyType": "layered",
+    "layout": "multilayer"
+  }
+}

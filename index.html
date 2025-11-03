@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Phonosematic Computational Topologies - TypeGPU Visualization</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: #1a1a1a;
+        color: #ffffff;
+      }
+      #app {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      #toolbar {
+        padding: 1rem;
+        background: #2a2a2a;
+        border-bottom: 1px solid #444;
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+      #canvas-container {
+        flex: 1;
+        position: relative;
+        overflow: hidden;
+      }
+      canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+      select, button {
+        padding: 0.5rem 1rem;
+        background: #3a3a3a;
+        color: #fff;
+        border: 1px solid #555;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      select:hover, button:hover {
+        background: #4a4a4a;
+      }
+      #info {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: rgba(0, 0, 0, 0.8);
+        padding: 1rem;
+        border-radius: 8px;
+        max-width: 300px;
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div id="toolbar">
+        <label>
+          Topology:
+          <select id="topology-select">
+            <option value="ring">Ring (Japanese)</option>
+            <option value="tree">Tree (English)</option>
+            <option value="lattice">Lattice (Chinese)</option>
+            <option value="layered">Layered (Semitic)</option>
+            <option value="linear">Linear (Turkish)</option>
+          </select>
+        </label>
+        <button id="reset-camera">Reset Camera</button>
+      </div>
+      <div id="canvas-container">
+        <canvas id="topology-canvas"></canvas>
+        <div id="info">
+          <h3 id="topology-title">Ring Topology</h3>
+          <p id="topology-description">Vowels form a cyclic hub, consonants branch tree-like.</p>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
+
